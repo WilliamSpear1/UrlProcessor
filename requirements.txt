@@ -1,0 +1,9 @@
+flask
+celery
+requests
+selenium
+selenium-wire
+gunicorn
+pip
+blinker==1.5
+redis
