@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-                git url 'https://github.com/WilliamSpear1/URlProcessor.git', branch:'main'
+                git url: 'https://github.com/WilliamSpear1/URlProcessor.git', branch:'main'
             }
         }
 
