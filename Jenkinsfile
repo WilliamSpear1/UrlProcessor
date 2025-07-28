@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    options {
+      skipDefaultCheckout() // Prevent Jenkins from auto-checking out with tag attempt
+    }
     environment {
         REGISTRY = 'registry.spearmanwm.dev'
         IMAGE_NAME = '${REGISTRY}/url_processor'
