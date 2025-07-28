@@ -7,7 +7,7 @@ pipeline {
         sh """
             git config --system user.name "William Spearman"
             git config --system user.email "wspearman.protonmail.com"
-        """"
+        """
     }
 
     stages {
