@@ -16,8 +16,8 @@ pipeline {
         stage('setup git config') {
             steps {
                 sh '''
-                    git config --system user.name "William Spearman"
-                    git config --system user.email "wspearman.protonmail.com"
+                    git config user.name "William Spearman"
+                    git config user.email "wspearman.protonmail.com"
                 '''
             }
         }
