@@ -10,6 +10,11 @@ pipeline {
         stage('clone') {
             steps {
                 git url: 'https://github.com/WilliamSpear1/URlProcessor.git', branch:'main'
+            }
+        }
+
+        stage('setup git config') {
+            steps {
                 sh """
                     git config --system user.name "William Spearman"
                     git config --system user.email "wspearman.protonmail.com"
