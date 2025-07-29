@@ -33,9 +33,7 @@ pipeline {
         stage('push to private registry') {
             steps {
                 scripts {
-                    sh """
-                     echo docker push ${IMAGE_NAME}:latest
-                    """
+                    docker.push("${REGISTRY}/${IMAGE_NAME}:latest")
                 }
             }
         }
