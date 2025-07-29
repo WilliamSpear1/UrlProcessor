@@ -1,6 +1,6 @@
 from flask import Flask
 
-from UrlProcessor.URLProcessor.routes import bp
+from URLProcessor.routes import bp
 
 
 def create_app() -> Flask:
