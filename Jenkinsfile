@@ -26,7 +26,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 script {
-                    docker.build("${REGISTRY}/${IMAGE_NAME}:latest")
+                    dockerImage = docker.build("${REGISTRY}/${IMAGE_NAME}:latest")
                 }
             }
         }
@@ -34,7 +34,8 @@ pipeline {
         stage('push to private registry') {
             steps {
                 script {
-                    docker.push("${REGISTRY}/${IMAGE_NAME}:latest")
+                   docker.withRegistry('https://registry.spearmanwm.dev',) {
+                        dockerImage.push()
                 }
             }
         }
