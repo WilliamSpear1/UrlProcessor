@@ -36,6 +36,7 @@ pipeline {
                 script {
                    docker.withRegistry("${REGISTRY}") {
                         dockerImage.push()
+                    }
                 }
             }
         }
