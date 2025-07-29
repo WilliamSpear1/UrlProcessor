@@ -2,10 +2,6 @@ def dockerImage
 pipeline {
     agent any
     
-    options {
-        skipDefaultCheckout() // Prevent Jenkins from auto-checking out with tag attempt
-    }
-    
     environment {
         REGISTRY = 'registry.spearmanwm.dev'
         IMAGE_NAME = 'url_processor'
@@ -16,15 +12,6 @@ pipeline {
         stage('clone') {
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubCredentials', url: 'https://github.com/WilliamSpear1/UrlProcessor.git']])
-            }
-        }
-
-        stage('setup git config') {
-            steps {
-                sh '''
-                    git config user.name "William Spearman"
-                    git config user.email "wspearman.protonmail.com"
-                '''
             }
         }
 
