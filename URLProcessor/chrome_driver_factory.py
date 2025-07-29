@@ -13,6 +13,7 @@ class ChromeDriverFactory:
         self.url    = url
         self.driver = self.browser()
 
+    #getters
     def get_driver(self) -> Chrome:
         return self.driver
 
