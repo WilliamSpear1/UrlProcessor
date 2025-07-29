@@ -4,7 +4,7 @@ pipeline {
     environment {
         REGISTRY = 'registry.spearmanwm.dev'
         IMAGE_NAME = 'url_processor'
-        HOME = "${WORKSPACE}"
+        HOME = '${WORKSPACE}'
     }
 
     stages {
@@ -41,9 +41,9 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            cleanWs()
-        }
+}
+post {
+    always {
+        cleanWs()
     }
 }
