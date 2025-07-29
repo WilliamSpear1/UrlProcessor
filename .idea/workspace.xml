@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dbddf7a7-a632-4012-ad87-7dd6b575ce3b" name="Changes" comment="Update - Jenkinsfile." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "WilliamSpear1"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/WilliamSpear1/UrlProcessor.git",
+    "accountId": "e695c9f0-b0c6-4f9a-9347-148397dac9ce"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="30VzgnUF47NAbUVkIkf5kPcAPRX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/wilabeast/PycharmProjects/UrlProcessor"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dbddf7a7-a632-4012-ad87-7dd6b575ce3b" name="Changes" comment="" />
+      <created>1753727642411</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753727642411</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added - Return types.">
+      <option name="closed" value="true" />
+      <created>1753801006178</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1753801006178</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753806740631</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1753806740631</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753806878941</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1753806878941</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753809482402</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1753809482402</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753809529940</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1753809529940</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753809716323</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1753809716323</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753810762258</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1753810762258</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753811726193</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1753811726193</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753811758692</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1753811758692</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753811880432</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1753811880432</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753811927663</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1753811927663</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753812227751</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1753812227751</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753812458481</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1753812458481</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753812782254</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1753812782254</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Update - Jenkinsfile.">
+      <option name="closed" value="true" />
+      <created>1753815210635</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1753815210635</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="Jenkinsfile" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added - Return types." />
+    <MESSAGE value="Update - Jenkinsfile." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update - Jenkinsfile." />
+  </component>
+</project>
