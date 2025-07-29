@@ -24,7 +24,6 @@ class ChromeDriverFactory:
         options.add_argument("--disable-dev-shm-usage")
 
 
-        # Optional: Configure selenium-wire to optimize performance
         seleniumwire_options = {
             'verify_ssl': False,
             'mitm_http2': False,

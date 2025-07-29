@@ -15,8 +15,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-                git branch: 'main', credentialsId: 'GitHubCredentials', url: 'https://github.com/WilliamSpear1/Downloader.git'
-            }
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubCredentials', url: 'https://github.com/WilliamSpear1/UrlProcessor.git']])
         }
 
         stage('setup git config') {
