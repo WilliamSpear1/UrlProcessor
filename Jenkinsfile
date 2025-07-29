@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REGISTRY = 'registry.spearmanwm.dev'
-        IMAGE_NAME = '${REGISTRY}/url_processor'
+        IMAGE_NAME = 'url_processor'
     }
 
     stages {
@@ -25,7 +25,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:latest")
+                    docker.build("${REGISTRY}/${IMAGE_NAME}:latest")
                 }
             }
         }
