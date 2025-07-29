@@ -1,12 +1,17 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from URLProcessor.properties import Properties
 from logs.logger_config import setup_logging
 
 logger = setup_logging(__name__)
 
 class Downloader:
-    PORN_HITS = "ahcdn.pornhits"
+    properties = Properties()
+    WEBSITE = properties.get_website_name()
+
+    logger.info(WEBSITE)
 
     def scarp_multiple_videos(self, chrome_driver) -> dict:
         driver              = chrome_driver.get_driver()
@@ -52,7 +57,7 @@ class Downloader:
         for request in driver.requests:
             if request.response:
                 url = request.url.lower()
-                if self.PORN_HITS in url:
+                if self.WEBSITE in url:
                     logger.info("Needed URL: ", request.url)
                     return request.url
 
