@@ -39,7 +39,7 @@ pipeline {
         stage('push to private registry') {
             steps {
                 script {
-                   docker.withRegistry("${REGISTRY}") {
+                   docker.withRegistry("https://registry.spearmanwm.dev") {
                         dockerImage.push()
                     }
                 }
