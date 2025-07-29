@@ -1,3 +1,4 @@
+def dockerImage
 pipeline {
     agent any
     
@@ -30,7 +31,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 script {
-                    def dockerImage = docker.build("${REGISTRY}/${IMAGE_NAME}:latest")
+                    dockerImage = docker.build("${REGISTRY}/${IMAGE_NAME}:latest")
                 }
             }
         }
