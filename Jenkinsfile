@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-                git url: 'https://github.com/WilliamSpear1/URlProcessor.git', branch:'main'
+                git branch: 'main', credentialsId: 'GitHubCredentials', url: 'https://github.com/WilliamSpear1/Downloader.git'
             }
         }
 
