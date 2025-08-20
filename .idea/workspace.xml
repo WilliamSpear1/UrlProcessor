@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbddf7a7-a632-4012-ad87-7dd6b575ce3b" name="Changes" comment="Update - Jenkinsfile." />
+    <list default="true" id="dbddf7a7-a632-4012-ad87-7dd6b575ce3b" name="Changes" comment="Update - Jenkinsfile.">
+      <change afterPath="$PROJECT_DIR$/URLProcessor/flask_response.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/URLProcessor/logs/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/URLProcessor/logs/logger_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/URLProcessor/wsgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_properties.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/logger_config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,20 +30,20 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/URLProcessor" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "WilliamSpear1"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;WilliamSpear1&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/WilliamSpear1/UrlProcessor.git",
-    "accountId": "e695c9f0-b0c6-4f9a-9347-148397dac9ce"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/WilliamSpear1/UrlProcessor.git&quot;,
+    &quot;accountId&quot;: &quot;e695c9f0-b0c6-4f9a-9347-148397dac9ce&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -43,13 +55,120 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Python tests for tests.test_downloader.test_grab_hrefs_returns_dict.executor": "Run",
+    "Python tests.Python tests for tests.test_logger.test_compress_rotated_log_creates_gz_and_removes_source.executor": "Run",
+    "Python tests.Python tests for tests.test_logger.test_logs_directory_created.executor": "Run",
+    "Python tests.Python tests for tests.test_properties.test_get_config_reads_file.executor": "Run",
+    "Python tests.Python tests for tests.test_properties.test_get_config_returns_parser.executor": "Run",
+    "Python tests.Python tests for tests.test_properties.test_get_website_name.executor": "Run",
+    "Python tests.Python tests for tests.test_properties.test_get_website_name_returns_value.executor": "Run",
+    "Python tests.Python tests for tests.test_properties.test_missing_section_or_option_raises_error.executor": "Run",
+    "Python tests.Python tests for tests.test_routes.test_download_not_registered.executor": "Run",
+    "Python tests.Python tests for tests.test_routes.test_task_status_failur.executor": "Run",
+    "Python tests.Python tests for tests.test_routes.test_task_status_pending.executor": "Run",
+    "Python tests.Python tests for tests.test_routes.test_task_status_success.executor": "Run",
+    "Python tests.Python tests in test_routes.py.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/wilabeast/PycharmProjects/UrlProcessor"
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/wilabeast/PycharmProjects/UrlProcessor",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/URLProcessor" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Python tests for tests.test_logger.test_compress_rotated_log_creates_gz_and_removes_source">
+    <configuration name="Python tests for tests.test_downloader.test_grab_hrefs_returns_dict" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="UrlProcessor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_downloader.test_grab_hrefs_returns_dict&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_logger.test_compress_rotated_log_creates_gz_and_removes_source" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="UrlProcessor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_logger.test_compress_rotated_log_creates_gz_and_removes_source&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_logger.test_logs_directory_created" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="UrlProcessor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_logger.test_logs_directory_created&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_routes.test_download_not_registered" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="UrlProcessor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_routes.test_download_not_registered&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in test_routes.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="UrlProcessor" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_routes.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Python tests for tests.test_logger.test_compress_rotated_log_creates_gz_and_removes_source" />
+        <item itemvalue="Python tests.Python tests for tests.test_logger.test_logs_directory_created" />
+        <item itemvalue="Python tests.Python tests for tests.test_downloader.test_grab_hrefs_returns_dict" />
+        <item itemvalue="Python tests.Python tests in test_routes.py" />
+        <item itemvalue="Python tests.Python tests for tests.test_routes.test_download_not_registered" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="dbddf7a7-a632-4012-ad87-7dd6b575ce3b" name="Changes" comment="" />
@@ -188,5 +307,6 @@
     <MESSAGE value="Added - Return types." />
     <MESSAGE value="Update - Jenkinsfile." />
     <option name="LAST_COMMIT_MESSAGE" value="Update - Jenkinsfile." />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

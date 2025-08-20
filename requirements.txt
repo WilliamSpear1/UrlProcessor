@@ -1,3 +1,4 @@
+moneta
 flask
 celery
 requests
@@ -7,3 +8,4 @@ gunicorn
 pip
 blinker==1.5
 redis
+pytest
