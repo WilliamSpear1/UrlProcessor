@@ -1,1 +1,4 @@
 *.properties
+.idea
+*.logs
+*.log
