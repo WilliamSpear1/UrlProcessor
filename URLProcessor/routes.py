@@ -48,10 +48,10 @@ def download() -> tuple[Response, int]:
                 try:
                         task = fetch_urls.delay(url)
                         return jsonify({"task_id": task.id, "status": "processing"}), 202
-                except NotRegistered as e:
+                except Exception as e:
                         if i < MAX_RETRIES - 1:
                                 time.sleep(RETRY_DELAY)
                         else:
-                                return jsonify({'error': e}), 400
+                                return jsonify({'error': str(e)}), 400
         return jsonify({'Error': 'Problem occurring with processing URL'}), 500
 
