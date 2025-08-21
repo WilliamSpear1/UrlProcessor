@@ -30,13 +30,14 @@ class Downloader:
             href                    = anchor_element.get_attribute('href')
             title                    = anchor_element.get_attribute('title')
             videos[title]        = href
-
+        logger.info(f"Videos, {videos}")
         return videos
 
-    def handle_multiple_tabs(self, chrome_driver:ChromeDriverFactory, videos:list) -> dict:
+    def handle_multiple_tabs(self, chrome_driver:ChromeDriverFactory, videos:dict) -> dict:
         download_links = {}
         driver = chrome_driver.get_driver()
 
+        logger.info("Starting to open multiple tabs with links.")
         for title, href in videos.items():
             driver.execute_script("window.open(arguments[0]);", href)
             driver.switch_to.window(driver.window_handles[-1])
@@ -54,6 +55,9 @@ class Downloader:
     def grab_download_link(self, chrome_driver:ChromeDriverFactory, url:str) -> str | None:
         chrome_driver.change_url(url)
         driver = chrome_driver.get_driver()
+
+        logger.info(f"Grabbing downloadable link from: {url}")
+        logger.info(f"WEBSITE: {self.WEBSITE}")
 
         for request in driver.requests:
             if request.response:
