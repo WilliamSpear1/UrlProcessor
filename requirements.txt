@@ -8,3 +8,4 @@ pip
 blinker==1.5
 redis
 pytest
+setuptools
