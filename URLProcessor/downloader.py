@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from URLProcessor.chrome_driver_factory import ChromeDriverFactory
 from URLProcessor.properties import Properties
 from logs.logger_config import setup_logging
 
@@ -13,7 +14,7 @@ class Downloader:
 
     logger.info(WEBSITE)
 
-    def scarp_multiple_videos(self, chrome_driver) -> dict:
+    def scarp_multiple_videos(self, chrome_driver:ChromeDriverFactory) -> dict:
         driver              = chrome_driver.get_driver()
         video_titles      = driver.find_elements(By.CSS_SELECTOR, "article.item > div.item-info")
         videos              = self.grab_hrefs(video_titles)
@@ -21,7 +22,7 @@ class Downloader:
 
         return download_urls
 
-    def grab_hrefs(self, video_titles) -> dict:
+    def grab_hrefs(self, video_titles:list) -> dict:
         videos = {}
 
         for element in video_titles:
@@ -32,7 +33,7 @@ class Downloader:
 
         return videos
 
-    def handle_multiple_tabs(self, chrome_driver, videos) -> dict:
+    def handle_multiple_tabs(self, chrome_driver:ChromeDriverFactory, videos:list) -> dict:
         download_links = {}
         driver = chrome_driver.get_driver()
 
@@ -50,7 +51,7 @@ class Downloader:
 
         return download_links
 
-    def grab_download_link(self, chrome_driver, url) -> str | None:
+    def grab_download_link(self, chrome_driver:ChromeDriverFactory, url:str) -> str | None:
         chrome_driver.change_url(url)
         driver = chrome_driver.get_driver()
 

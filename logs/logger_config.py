@@ -1,7 +1,8 @@
 #Ensure the logs directory exists
 import gzip
-import logging
 import datetime
+import logging
+import logging.config
 import os
 import shutil
 from logging.handlers import TimedRotatingFileHandler
