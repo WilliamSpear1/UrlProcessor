@@ -2,6 +2,7 @@ from celery import Celery
 
 from URLProcessor.chrome_driver_factory import ChromeDriverFactory
 from URLProcessor.downloader import Downloader
+from logs.logger_config import setup_logging
 
 celery_app = Celery("tasks", broker='amqp://guest:qmdB1BZK^vd@192.168.50.182:5672//', backend="redis://192.168.50.182:6379/0")
 logger = setup_logging(__name__)
