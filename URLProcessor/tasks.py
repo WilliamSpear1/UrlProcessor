@@ -1,7 +1,7 @@
 from celery import Celery
 
-from UrlProcessor.URLProcessor.chrome_driver_factory import ChromeDriverFactory
-from UrlProcessor.URLProcessor.downloader import Downloader
+from URLProcessor.chrome_driver_factory import ChromeDriverFactory
+from URLProcessor.downloader import Downloader
 
 celery_app = Celery("tasks", broker='amqp://guest:qmdB1BZK^vd@192.168.50.182:5672//', backend="redis://192.168.50.182:6379/0")
 @celery_app.task(name="tasks.fetch_urls")

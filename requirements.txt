@@ -1,4 +1,3 @@
-moneta
 flask
 celery
 requests

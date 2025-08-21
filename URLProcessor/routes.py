@@ -3,7 +3,7 @@ import time
 from celery.exceptions import NotRegistered
 from flask import Blueprint, request, jsonify, Response, json
 
-from UrlProcessor.URLProcessor.tasks import celery_app, fetch_urls
+from URLProcessor.tasks import celery_app, fetch_urls
 from logs.logger_config import setup_logging
 
 logger = setup_logging(__name__)
