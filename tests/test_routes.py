@@ -2,7 +2,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from URLProcessor.wsgi import create_app
+from wsgi import create_app
 
 @pytest.fixture
 def client():

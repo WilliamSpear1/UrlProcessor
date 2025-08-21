@@ -45,4 +45,4 @@ COPY . /app
 EXPOSE 5001
 
 # Run Gunicorn (serving Flask app)
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "4", "URLProcessor:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "4", "wsgi:app"]
