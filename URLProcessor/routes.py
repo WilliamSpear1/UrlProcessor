@@ -11,7 +11,7 @@ bp = Blueprint('main', __name__)
 
 # routes for polling task status.
 @bp.route('/task-status/<task_id>', methods=['GET'])
-def task_status(task_id) -> Response:
+def task_status(task_id) -> tuple[Response,int]:
         task = celery_app.AsyncResult(task_id)
 
         if task.state == 'PENDING':
@@ -29,11 +29,11 @@ def task_status(task_id) -> Response:
                         'state': task.state,
                         'status': str(task.info)  # this is the exception raised
                 }
-        return jsonify(response, 200)
+        return jsonify(response), 200
 
 # routes for polling task status.
 @bp.route('/fetch-urls', methods=['POST'])
-def download() -> json:
+def download() -> tuple[Response, int]:
         MAX_RETRIES = 3
         RETRY_DELAY = 2
 
