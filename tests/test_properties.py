@@ -4,7 +4,7 @@ import textwrap
 
 import pytest
 
-from URLProcessor.properties import Properties
+from properties import Properties
 
 
 @pytest.fixture

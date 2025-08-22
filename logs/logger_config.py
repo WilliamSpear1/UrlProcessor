@@ -8,6 +8,8 @@ import shutil
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
+from gunicorn.glogging import Logger
+
 Path("logs").mkdir(parents=True, exist_ok=True)
 
 LOGGING_CONFIG = {

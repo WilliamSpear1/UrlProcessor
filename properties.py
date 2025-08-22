@@ -1,8 +1,4 @@
 import configparser
-from configparser import ConfigParser
-from logs.logger_config import setup_logging
-
-logger = setup_logging(__name__)
 
 class Properties:
     def __init__(self, filename="config.properties"):

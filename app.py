@@ -1,19 +1,16 @@
+import logging
 import time
+from flask import request, jsonify, Response, Flask
+from tasks import fetch_urls, celery_app
 
-from celery.exceptions import NotRegistered
-from flask import Blueprint, request, jsonify, Response, json
-
-from URLProcessor.tasks import celery_app, fetch_urls
-from logs.logger_config import setup_logging
-
-logger = setup_logging(__name__)
-bp = Blueprint('main', __name__)
+logger = logging.getLogger(__name__)
+app = Flask(__name__)
 
 # routes for polling task status.
-@bp.route('/task-status/<task_id>', methods=['GET'])
+@app.route('/task-status/<task_id>', methods=['GET'])
 def task_status(task_id) -> tuple[Response,int]:
         task = celery_app.AsyncResult(task_id)
-
+        logger.info("status")
         if task.state == 'PENDING':
                 response = {
                         'state': task.state,
@@ -32,16 +29,16 @@ def task_status(task_id) -> tuple[Response,int]:
         return jsonify(response), 200
 
 # routes for polling task status.
-@bp.route('/fetch-urls', methods=['POST'])
+@app.route('/fetch-urls', methods=['POST'])
 def download() -> tuple[Response, int]:
         MAX_RETRIES = 3
         RETRY_DELAY = 2
-
         # Retrieve Url from json request.
         data = request.get_json()
         url  = data.get('url')
 
         if not url:
+                logger.info('URL is not found');
                 return jsonify({'error': 'URL is required'}), 400
 
         for i in range(MAX_RETRIES):

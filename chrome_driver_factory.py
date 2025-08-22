@@ -1,12 +1,13 @@
+import logging
+
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from seleniumwire.webdriver import Chrome
-from logs.logger_config import setup_logging
 
-logger = setup_logging(__name__)
+logger = logging.getLogger(__name__)
 
 class ChromeDriverFactory:
     def __init__(self, url):

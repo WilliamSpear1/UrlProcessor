@@ -1,12 +1,13 @@
+import logging
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from URLProcessor.chrome_driver_factory import ChromeDriverFactory
-from URLProcessor.properties import Properties
-from logs.logger_config import setup_logging
+from chrome_driver_factory import ChromeDriverFactory
+from properties import Properties
 
-logger = setup_logging(__name__)
+logger = logging.getLogger(__name__)
 
 class Downloader:
     properties = Properties()
