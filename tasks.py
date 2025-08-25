@@ -24,18 +24,30 @@ celery_app.conf.update(
 # Celery App Task.
 @celery_app.task
 def fetch_urls(url:str) -> dict:
+    """
+    Celery Task: Launch a Chrome browser, scarp downloadable video URLS, and return them.
+    """
+    # TODO: Update to acquire links from multiple pages.
+    chrome_browser = None
     try:
         chrome_browser  = ChromeDriverFactory(url)
-        downloader          = Downloader()
+        downloader          = Downloader(chrome_browser)
 
-        logger.info("Start the browser and start scarping videos.")
+        logger.info("Start the browser and start scarping videos for URL: %s", url)
+
         # Start the browser and scrape multiple videos.
-        download_videos = downloader.scarp_multiple_videos(chrome_browser)
+        download_videos = downloader.scarp_multiple_videos()
 
-        logger.info("Close the browser task for scraping is finished.")
-        # End Browser session.
-        chrome_browser.close_browser()
-        logger.info(f"Return downloadable videos: {download_videos}")
+        logger.info("Scraping complete. Found %d videos.", len(download_videos))
         return download_videos
     except Exception as e:
+        logger.exception("Error while fetching URLs for %s", url)
         return {'error': str(e)}
+    finally:
+        if chrome_browser:
+            try:
+                # End Browser session.
+                chrome_browser.close_browser()
+                logger.info("Browser session closed successfully")
+            except Exception as close_error:
+                logger.warning("Error while closing browser: %s", close_error)

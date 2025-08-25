@@ -8,8 +8,6 @@ import shutil
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
-from gunicorn.glogging import Logger
-
 Path("logs").mkdir(parents=True, exist_ok=True)
 
 LOGGING_CONFIG = {
@@ -73,7 +71,18 @@ def setup_logging(name) -> logging.Logger:
     Set up logging configuration.
     """
     logging.config.dictConfig(LOGGING_CONFIG)
+
     logger = logging.getLogger('app_logger')
     add_rotator(logger)
+
+     # Attach Gunicorn loggers (error + access) to app_logger handlers
+    gunicorn_error = logging.getLogger("gunicorn.error")
+    gunicorn_access = logging.getLogger("gunicorn.access")
+
+    for g_logger in (gunicorn_error, gunicorn_access):
+        g_logger.handlers = logger.handlers
+        g_logger.setLevel(logging.INFO)
+        g_logger.propagate = False
+
     logger.info("Logging is set up in: %s", name)
     return logger

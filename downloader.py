@@ -10,61 +10,79 @@ from properties import Properties
 logger = logging.getLogger(__name__)
 
 class Downloader:
-    properties = Properties()
-    WEBSITE = properties.get_website_name()
+    def __init__(self, chrome_driver:ChromeDriverFactory ):
+        self.properties = Properties()
+        self.chrome_driver = chrome_driver
+        self.driver = chrome_driver.get_driver()
 
-    logger.info(WEBSITE)
+    def scarp_multiple_videos(self) -> dict:
+        """Scrape multiple video download URLs from page."""
+        video_list = self.driver.find_elements(By.CSS_SELECTOR, "article.item > div.item-info")
+        logger.info("Scraping complete. Found %d videos thumbnails.", len(video_list))
+        return self._extract_video_links(video_list)
 
-    def scarp_multiple_videos(self, chrome_driver:ChromeDriverFactory) -> dict:
-        driver              = chrome_driver.get_driver()
-        video_titles      = driver.find_elements(By.CSS_SELECTOR, "article.item > div.item-info")
-        videos              = self.grab_hrefs(video_titles)
-        download_urls = self.handle_multiple_tabs(chrome_driver, videos)
-
-        return download_urls
-
-    def grab_hrefs(self, video_titles:list) -> dict:
+    def _extract_video_links(self, video_titles:list) -> dict[str, str]:
+        """Extract titles and hrefs from video elements."""
         videos = {}
 
         for element in video_titles:
             anchor_element = element.find_element(By.CSS_SELECTOR, 'a')
             href                    = anchor_element.get_attribute('href')
             title                    = anchor_element.get_attribute('title')
-            videos[title]        = href
-        logger.info(f"Videos, {videos}")
-        return videos
+            if href and title:
+                videos[title] = href
 
-    def handle_multiple_tabs(self, chrome_driver:ChromeDriverFactory, videos:dict) -> dict:
+        logger.info(" Extracted Videos %s" , videos)
+
+        return self._handle_multiple_tabs(videos)
+
+    def _handle_multiple_tabs(self, videos:dict) -> dict[str,str] | None:
+        """Open each video in a new tab, extract download link, then close tab."""
         download_links = {}
-        driver = chrome_driver.get_driver()
+        main_window = self.driver.current_window_handle
 
         logger.info("Starting to open multiple tabs with links.")
+
         for title, href in videos.items():
-            driver.execute_script("window.open(arguments[0]);", href)
-            driver.switch_to.window(driver.window_handles[-1])
+            try:
+                self.driver.execute_script("window.open(arguments[0]);", href)
+                new_window = self.driver.window_handles[-1]
+                self.driver.switch_to.window(new_window)
 
-            (WebDriverWait(driver, 10)
-             .until(EC.presence_of_all_elements_located((By.TAG_NAME, "body"))))
+                (WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_all_elements_located((By.TAG_NAME, "body")))
+                )
 
-            download_links[title] = self.grab_download_link(chrome_driver, href)
-            logger.info(f"Processing video: {href}")
-            driver.close()
-            driver.switch_to.window(driver.window_handles[0])
+                download_link = self._grab_download_link(href)
+                if download_link:
+                    download_links[title] = download_link
+
+                logger.info("Processing video: %s", href)
+            except Exception as e:
+                logger.info('Error Processing %s: %s', href, e)
+            finally:
+                self.driver.close()
+                #Ensure main window still exists before switching.
+                if main_window in self.driver.window_handles:
+                    self.driver.switch_to.window(main_window)
+                else :
+                    logger.error("Main window handle not found after closing tab.")
+                    break
 
         return download_links
 
-    def grab_download_link(self, chrome_driver:ChromeDriverFactory, url:str) -> str | None:
-        chrome_driver.change_url(url)
-        driver = chrome_driver.get_driver()
+    def _grab_download_link(self, url:str) -> str | None:
+        """Inspect network requests to find the downloadable link."""
+        WEBSITE = self.properties.get_website_name()
+        self.chrome_driver.change_url(url)
 
         logger.info(f"Grabbing downloadable link from: {url}")
-        logger.info(f"WEBSITE: {self.WEBSITE}")
 
-        for request in driver.requests:
+        for request in self.driver.requests:
             if request.response:
-                url = request.url.lower()
-                if self.WEBSITE in url:
-                    logger.info("Needed URL: ", request.url)
+                request_url = request.url.lower()
+                if WEBSITE in request_url:
+                    logger.info("Found matching URL: %s", request.url)
                     return request.url
 
         logger.info("No download link found for URL: ", url)
