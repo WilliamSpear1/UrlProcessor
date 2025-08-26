@@ -43,4 +43,15 @@ COPY . /app
 
 EXPOSE 5001
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "4", "app:app"]
+CMD ["gunicorn","app:app", \
+    "--bind", "0.0.0.0:5001", \
+    "--workers", "4", \
+    "--worker-class", "gthread", \
+    "--threads", "2", \
+    "--timeout", "120", \
+    "--max-requests", "1000", \
+    "--max-requests-jitter", "50", \
+    "--log-level", "info", \
+    "--error-logfile", "-", \
+    "--access-logfile", "-", \
+    "--capture-output"]
