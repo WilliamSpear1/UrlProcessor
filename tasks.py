@@ -1,6 +1,8 @@
 import logging
 import os
+
 from celery import Celery
+
 from chrome_driver_factory import ChromeDriverFactory
 from downloader import Downloader
 
@@ -8,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 # Celery App initialization & configuration.
 celery_app = Celery(
-    "URLProcessor",
+    "tasks",
     backend=os.environ['CELERY_RESULT_BACKEND'],
     broker=os.environ['CELERY_BROKER_URL']
 )

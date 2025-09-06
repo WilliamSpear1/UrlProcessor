@@ -1,0 +1,41 @@
+services:
+  # Url Processor Container
+  url_processor:
+    image: registry.spearmanwm.dev/url_processor:latest
+    container_name: url_processor
+    restart: unless-stopped
+    ports:
+      - 5001:5001
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    networks:
+      - url_processor_net
+  # Celery Worker Container
+  celery-worker:
+    image: registry.spearmanwm.dev/url_processor:latest
+    container_name: celery_worker
+    command: celery -A tasks worker --events -l info
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - url_processor
+  # Celery Beat Container
+  celery-beat:
+    image: registry.spearmanwm.dev/url_processor:latest
+    container_name: celery_beat
+    command: celery -A tasks beat
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - url_processor
+
+networks:
+  url_processor_net:
+    driver: bridge
