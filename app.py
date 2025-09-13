@@ -3,6 +3,7 @@ import time
 
 from celery.result import AsyncResult
 from flask import request, jsonify, Response, Flask
+
 from tasks import fetch_urls, celery_app
 
 logger = logging.getLogger(__name__)
@@ -23,7 +24,8 @@ def task_status(task_id) -> tuple[Response,int]:
     if task.state == 'PENDING':
         response['status'] = "Pending"
     elif task.state == 'SUCCESS':
-        response['status'] = task.result
+        response['status'] = 'Success'
+        response['result'] = task.result
     else: # FAILURE, RETRY, STARTED, etc.
         response['status'] = str(task.info) if task.info else "In Progress"
 

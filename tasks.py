@@ -10,12 +10,14 @@ logger = logging.getLogger(__name__)
 
 # Celery App initialization & configuration.
 celery_app = Celery(
-    "tasks",
+    "url_processor",
     backend=os.environ['CELERY_RESULT_BACKEND'],
     broker=os.environ['CELERY_BROKER_URL']
 )
 
+
 celery_app.conf.update(
+    task_default_queue = "url_processor_queue",
     task_serializer="json",
     accept_content=["json"],
     result_serializer="json",

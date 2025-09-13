@@ -13,29 +13,19 @@ services:
       - TZ=America/New_York
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - DOMAIN=${DOMAIN}
     networks:
-      - url_processor_net
+      - app-net
   # Celery Worker Container
   celery-worker:
     image: registry.spearmanwm.dev/url_processor:latest
-    container_name: celery_worker
-    command: celery -A tasks worker --events -l info
+    container_name: celery_worker_url_processor
+    command: celery -A tasks worker -Q url_processor_queue --events -l info
     environment:
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
     depends_on:
       - url_processor
-  # Celery Beat Container
-  celery-beat:
-    image: registry.spearmanwm.dev/url_processor:latest
-    container_name: celery_beat
-    command: celery -A tasks beat
-    environment:
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
-    depends_on:
-      - url_processor
-
 networks:
-  url_processor_net:
-    driver: bridge
+  app-net:
+    external: true
