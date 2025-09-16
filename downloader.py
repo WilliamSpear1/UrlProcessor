@@ -81,7 +81,6 @@ class Downloader:
 
     def _grab_download_link(self, url:str) -> str | None:
         """Inspect network requests to find the downloadable link."""
-        logger.info("HERE")
         DOMAIN_NAME = os.environ.get('DOMAIN')
         self._chrome_browser.change_url(url)
         driver = self._chrome_browser.get_driver()
