@@ -1,9 +1,11 @@
 import logging
 import os
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from seleniumwire.webdriver import Chrome
 
 from chrome_driver_factory import ChromeDriverFactory
 
@@ -38,62 +40,55 @@ class Downloader:
         return self._handle_multiple_tabs(videos)
 
     def _handle_multiple_tabs(self, videos:dict) -> dict[str,str] | None:
-        driver = self._chrome_browser.get_driver()
-
         """Open each video in a new tab, extract download link, then close tab."""
         download_links = {}
-        main_window = driver.current_window_handle
 
         logger.info("Starting to open multiple tabs with links.")
 
         for title, href in videos.items():
-            logger.info("Title: %s", title)
-            logger.info("Link: %s", href)
+            logger.info("For Title: %s", title)
+            logger.info("For Link: %s", href)
 
-            try:
-                driver.execute_script("window.open(arguments[0]);", href)
-                new_window = driver.window_handles[-1]
-                driver.switch_to.window(new_window)
-
-                (WebDriverWait(driver, 10).until(
-                    EC.presence_of_all_elements_located((By.TAG_NAME, "body")))
-                )
-
-                download_link = self._grab_download_link(href)
-
-                if download_link:
-                    download_links[title] = download_link
-
-                logger.info("Processing video: %s", href)
-            except Exception as e:
-                logger.info('Error Processing %s: %s', href, e)
-            finally:
-                driver.close()
-                #Ensure main window still exists before switching.
-                if main_window in driver.window_handles:
-                    driver.switch_to.window(main_window)
-                else :
-                    logger.error("Main window handle not found after closing tab.")
-                    break
+            download_links[title] = self.handle_switch(href)
 
         logger.info("Download Links: %s", download_links)
         return download_links
 
-    def _grab_download_link(self, url:str) -> str | None:
-        """Inspect network requests to find the downloadable link."""
-        DOMAIN_NAME = os.environ.get('DOMAIN')
-        self._chrome_browser.change_url(url)
-        driver = self._chrome_browser.get_driver()
+    def handle_switch(self, href: str) -> str | None:
+        logger.info("Switching to new window.")
 
-        logger.info(f"Grabbing downloadable link from this url: {url}")
-        logger.info(f"Domain: {DOMAIN_NAME}")
+        chrome = ChromeDriverFactory(href)
+        driver = chrome.get_driver()
+
+        try:
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_all_elements_located((By.TAG_NAME, "body"))
+            )
+
+            time.sleep(5)
+
+            download_link = self._grab_download_link(driver)
+
+            logger.info(f"Download Link: {download_link}")
+            return download_link
+        finally:
+            logger.info("Closing Browser")
+            # Close the tab and switch back
+            chrome.close_browser()
+
+    def _grab_download_link(self, driver: Chrome) -> str | None:
+        DOMAIN_NAME = os.environ.get('DOMAIN')
+
+        logger.info(f"Inspecting network requests for domain {DOMAIN_NAME}")
 
         for request in driver.requests:
             if request.response:
-                request_url = request.url.lower()
-                if DOMAIN_NAME in request_url:
-                    logger.info("Found matching URL: %s", request.url)
-                    return request.url
+                if DOMAIN_NAME in request.url:
+                    ctype = request.response.headers.get("Content-Type", "")
+                    logger.debug(f"Captured: {request.url} (Content-Type: {ctype})")
+                    # Only keep likely video/media requests
+                    if request.url.endswith("_TPL_.mp4"):
+                        return request.url
 
-        logger.info("No download link found for URL: ", url)
+        logger.error("No Downloadable link has been found")
         return None

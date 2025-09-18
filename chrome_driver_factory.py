@@ -2,9 +2,9 @@ import logging
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
-from selenium.webdriver.support import expected_conditions as EC
 from seleniumwire.webdriver import Chrome
 
 logger = logging.getLogger(__name__)
@@ -20,9 +20,10 @@ class ChromeDriverFactory:
     def browser(self) -> Chrome:
         options = Options()
 
-        options.add_argument("--headless")
+        options.add_argument("--headless=new")  # modern headless mode
         options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-dev-shm-usage")  # prevent /dev/shm size issues
+        options.add_argument("--disable-gpu")
 
 
         seleniumwire_options = {
