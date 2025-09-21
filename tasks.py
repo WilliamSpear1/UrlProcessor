@@ -35,12 +35,12 @@ def fetch_urls(url:str) -> dict:
     chrome_browser = None
     try:
         chrome_browser  = ChromeDriverFactory(url)
-        downloader          = Downloader(chrome_browser)
+        downloader = Downloader()
 
         logger.info("Start the browser and start scarping videos for URL: %s", url)
 
         # Start the browser and scrape multiple videos.
-        download_videos = downloader.scarp_multiple_videos()
+        download_videos = downloader.scarp_multiple_videos(chrome_browser)
 
         logger.info("Scraping complete. Found %d videos.", len(download_videos))
         return download_videos
@@ -55,3 +55,13 @@ def fetch_urls(url:str) -> dict:
                 logger.info("Browser session closed successfully")
             except Exception as close_error:
                 logger.warning("Error while closing browser: %s", close_error)
+
+@celery_app.task
+def upload_urls(urls: list) -> dict:
+    """
+    Celery Task: Scarp downloadable video URLS, and return them.
+    """
+    downloader = Downloader()
+    download_videos = downloader.scarp_individual_videos(urls)
+
+    return download_videos

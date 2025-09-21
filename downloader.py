@@ -8,21 +8,31 @@ from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire.webdriver import Chrome
 
 from chrome_driver_factory import ChromeDriverFactory
+from title_formatter import TitleFormatter
 
 logger = logging.getLogger(__name__)
 
 class Downloader:
-    def __init__(self, chrome_browser:ChromeDriverFactory):
-        self._chrome_browser = chrome_browser
-
-    def scarp_multiple_videos(self) -> dict:
-        driver = self._chrome_browser.get_driver()
+    def scarp_multiple_videos(self, chrome_browser:ChromeDriverFactory) -> dict:
+        driver = chrome_browser.get_driver()
 
         """Scrape multiple video download URLs from page."""
         logger.info("Starting Scraping of videos.")
         video_list = driver.find_elements(By.CSS_SELECTOR, "article.item > div.item-info")
         logger.info("Scraping complete. Found %d videos thumbnails.", len(video_list))
         return self._extract_video_links(video_list)
+
+    def scarp_individual_videos(self, urls:list) -> dict:
+        """Scrape multiple video download URLs from file."""
+        videos = {}
+        title_formatter = TitleFormatter()
+
+        for url in urls:
+            href = url
+            title = title_formatter.format_title(url)
+            if href and title:
+                videos[title] = href
+        return self._handle_multiple_tabs(videos)
 
     def _extract_video_links(self, video_titles:list) -> dict[str, str]:
         """Extract titles and hrefs from video elements."""

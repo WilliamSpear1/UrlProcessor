@@ -3,8 +3,9 @@ import time
 
 from celery.result import AsyncResult
 from flask import request, jsonify, Response, Flask
+from werkzeug.datastructures import FileStorage
 
-from tasks import fetch_urls, celery_app
+from tasks import fetch_urls, celery_app, upload_urls
 
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
@@ -55,3 +56,23 @@ def download() -> tuple[Response, int]:
                 return jsonify({"error": str(e)}), 400
 
     return jsonify({"Error": "Problem occurring with processing URL"}), 500
+
+# route for uploading urls from files.
+@app.route('/upload', methods=['POST'])
+def upload() -> tuple[Response, int]:
+    logger.info(f"Request: {request.files}")
+    uploaded_file = request.files["file"]
+    logger.info("here")
+    if not uploaded_file:
+        logger.error("Missing uploaded file")
+        return jsonify({"error": "file_path required"}), 400
+
+    urls = process_urls(uploaded_file)
+    task = upload_urls.delay(urls)
+    return jsonify({"task_id": task.id, "status": "processing"}), 202
+
+def process_urls(uploaded_file: FileStorage) -> list:
+    urls = []
+    for line in uploaded_file.stream:
+            urls.append(line.decode("utf-8").strip())
+    return urls
