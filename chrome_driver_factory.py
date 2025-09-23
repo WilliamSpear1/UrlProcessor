@@ -8,10 +8,11 @@ from seleniumwire import webdriver
 from seleniumwire.webdriver import Chrome
 
 logger = logging.getLogger(__name__)
+logging.getLogger('seleniumwire').setLevel(logging.WARNING)
 
 class ChromeDriverFactory:
     def __init__(self, url):
-        self.url    = url
+        self.url = url
         self.driver = self.browser()
 
     def get_driver(self) -> Chrome:
@@ -24,7 +25,6 @@ class ChromeDriverFactory:
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")  # prevent /dev/shm size issues
         options.add_argument("--disable-gpu")
-
 
         seleniumwire_options = {
             'verify_ssl': False,

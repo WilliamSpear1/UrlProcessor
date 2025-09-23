@@ -32,7 +32,7 @@ class Downloader:
             title = title_formatter.format_title(url)
             if href and title:
                 videos[title] = href
-        return self._handle_multiple_tabs(videos)
+        return self._build_downloadable_videos(videos)
 
     def _extract_video_links(self, video_titles:list) -> dict[str, str]:
         """Extract titles and hrefs from video elements."""
@@ -47,29 +47,23 @@ class Downloader:
 
         logger.info(" Extracted Videos %s" , videos)
 
-        return self._handle_multiple_tabs(videos)
+        return self._build_downloadable_videos(videos)
 
-    def _handle_multiple_tabs(self, videos:dict) -> dict[str,str] | None:
+    def _build_downloadable_videos(self, videos:dict) -> dict[str,str] | None:
         """Open each video in a new tab, extract download link, then close tab."""
         download_links = {}
 
-        logger.info("Starting to open multiple tabs with links.")
-
         for title, href in videos.items():
-            logger.info("For Title: %s", title)
-            logger.info("For Link: %s", href)
-
-            download_links[title] = self.handle_switch(href)
+            download_links[title] = self._get_video_link(href)
 
         logger.info("Download Links: %s", download_links)
         return download_links
 
-    def handle_switch(self, href: str) -> str | None:
-        logger.info("Switching to new window.")
-
+    def _get_video_link(self, href: str) -> str | None:
         chrome = ChromeDriverFactory(href)
         driver = chrome.get_driver()
 
+        logger.info(f"Acquiring downloadable link for {href}")
         try:
             WebDriverWait(driver, 20).until(
                 EC.presence_of_all_elements_located((By.TAG_NAME, "body"))

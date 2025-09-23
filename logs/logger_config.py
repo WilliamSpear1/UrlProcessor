@@ -1,6 +1,6 @@
 #Ensure the logs directory exists
-import gzip
 import datetime
+import gzip
 import logging
 import logging.config
 import os
