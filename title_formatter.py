@@ -1,4 +1,5 @@
 import logging
+import os
 from urllib.parse import urlparse
 
 from selenium.webdriver.common.by import By
@@ -19,6 +20,8 @@ class TitleFormatter:
         return result
 
     def _get_names(self, href: str) -> list[str]:
+        H3_TEXT = os.environ.get('H3_TEXT')
+
         logger.info("Switching to new window.")
 
         chrome = ChromeDriverFactory(href)
@@ -33,7 +36,7 @@ class TitleFormatter:
         element = None
         for h3_element in h3_elements:
             text = h3_element.text
-            if "Porn-stars" in text:
+            if H3_TEXT in text:
                 logger.info(f"Text: {text}")
                 element = h3_element
 

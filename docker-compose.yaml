@@ -14,6 +14,7 @@ services:
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
+      - H3_TEXT=${H3_TEXT}
     networks:
       - app-net
   # Celery Worker Container
