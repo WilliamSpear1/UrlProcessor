@@ -10,9 +10,6 @@ from tasks import fetch_urls, celery_app, upload_urls
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
-#Configurable retry policy
-MAX_RETRIES = 3
-RETRY_DELAY = 2 # seconds
 
 # routes for polling task status.
 @app.route('/task-status/<task_id>', methods=['GET'])
@@ -36,8 +33,13 @@ def task_status(task_id) -> tuple[Response,int]:
 @app.route('/fetch-urls', methods=['POST'])
 def download() -> tuple[Response, int]:
     """Endpoint to start a Celery task for scraping URLs."""
+    # Configurable retry policy
+    MAX_RETRIES = 3
+    RETRY_DELAY = 2  # seconds
+
     data = request.get_json()
     url  = data.get('url')
+    number_of_pages = data.get('number_of_pages')
 
     if not url:
         logger.warning("Missing 'url' in request body")
@@ -45,7 +47,7 @@ def download() -> tuple[Response, int]:
 
     for attempt in range(1, MAX_RETRIES - 1):
         try:
-            task = fetch_urls.delay(url)
+            task = fetch_urls.delay(url, number_of_pages)
             logger.info("Submitted task_id=%s for url=%s", task.id, url)
             return jsonify({"task_id": task.id, "status": "processing"}), 202
         except Exception as e:

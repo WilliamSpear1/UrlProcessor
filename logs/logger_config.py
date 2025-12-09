@@ -8,7 +8,7 @@ import shutil
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
-Path("logs").mkdir(parents=True, exist_ok=True)
+Path("/var/log/url_processor").mkdir(parents=True, exist_ok=True)
 
 LOGGING_CONFIG = {
     "version": 1,

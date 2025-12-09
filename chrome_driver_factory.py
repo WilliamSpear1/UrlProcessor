@@ -43,11 +43,16 @@ class ChromeDriverFactory:
         return driver
 
     def change_url(self, new_url) -> None:
-        if self.driver:
+        if not self.driver:
+            logger.error("Driver instance is not available to change URL.")
+            return None
+
+        try:
             self.driver.get(new_url)
             logger.info(f"Changed URL to: {new_url}")
-        else:
-            logger.info("No browser instance to change URL.")
+        except Exception as e:
+            logger.exception("Failed to charge URL to %s: %s", new_url, e)
+            self.driver = None
 
     def close_browser(self) -> None:
         if self.driver:
