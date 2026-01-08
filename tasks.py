@@ -46,7 +46,8 @@ def fetch_urls(url:str, number_of_pages:int) -> dict:
             logger.info("Start the browser and start scarping videos for URL: %s", url)
 
             # Start the browser and scrape multiple videos.
-            download_videos = downloader.scarp_multiple_videos(chrome_browser)
+            page_results = downloader.scarp_multiple_videos(chrome_browser)
+            download_videos.update(page_results)
 
         logger.info("Scraping complete. Found %d videos.", len(download_videos))
         return download_videos
