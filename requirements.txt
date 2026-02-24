@@ -1,11 +1,11 @@
+selenium
 flask
 celery
 requests
-selenium
 selenium-wire
 gunicorn
 pip
-blinker==1.5
+blinker==1.5.0
 redis
 pytest
 setuptools
