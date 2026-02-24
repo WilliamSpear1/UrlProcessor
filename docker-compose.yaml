@@ -17,7 +17,7 @@ services:
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
       - H3_TEXT=${H3_TEXT}
-      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - ENVIRONMENT=${ENVIRONMENT}
     networks:
       - app-net
   # Celery Worker Container
@@ -31,7 +31,7 @@ services:
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
-      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - ENVIRONMENT=${ENVIRONMENT}
     depends_on:
       - url_processor
 networks:

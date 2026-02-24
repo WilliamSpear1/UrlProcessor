@@ -1,48 +1,17 @@
 #Ensure the logs directory exists
 import datetime
 import gzip
+import json
 import logging
 import logging.config
 import os
 import shutil
+from logging import Logger
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 Path("/var/log/url_processor").mkdir(parents=True, exist_ok=True)
-LOGGING_LEVEL = os.environ.get('LOGGING_LEVEL', 'INFO').upper()
-
-LOGGING_CONFIG = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            'format': '[%(asctime)s] [%(levelname)s] [PID:%(process)d] [TID:%(thread)d] %(name)s: %(message)s',
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        }
-    },
-    "handlers": {
-        "console_handler": {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
-            "level": LOGGING_LEVEL,
-        },
-        "file_handler": {
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "formatter": "default",
-            "filename": "downloader.logs",
-            "when": "midnight",
-            "atTime": datetime.time(2, 0, 0),
-            "backupCount": 3,
-            "level": LOGGING_LEVEL,
-        },
-    },
-    "loggers": {
-        "": {
-            "handlers": ["console_handler", "file_handler"],
-            "level": LOGGING_LEVEL
-        }
-    }
-}
+environment = os.environ.get('ENVIRONMENT')
 
 # Compressor
 """
@@ -68,13 +37,24 @@ def add_rotator(logger) -> None:
             handler.rotator = compress_rotated_log
             handler.namer = lambda name: name + '.gz'
 
+def safe_load_config() -> Logger | None:
+    try:
+        config_file = f'/app/logs/logging_config_{environment}.json'
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+        logging.config.dictConfig(config)
+        return logging.getLogger()
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.warning("Config file not found, using basicConfig with DEBUG level.")
+        return logging.getLogger()
+
 def setup_logging(name) -> logging.Logger:
     """
     Set up logging configuration.
     """
-    logging.config.dictConfig(LOGGING_CONFIG)
-    logger = logging.getLogger()
+    logger = safe_load_config()
     add_rotator(logger)
     logger.info(f"Logging is set up in: {name}")
-    logger.debug("Logging Level: %s", LOGGING_LEVEL)
+
     return logger
