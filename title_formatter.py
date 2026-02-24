@@ -7,25 +7,27 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from chrome_driver_factory import ChromeDriverFactory
+from logs.logger_config import setup_logging
 
-logger = logging.getLogger(__name__)
+logger = setup_logging(__name__)
 class TitleFormatter:
-    def format_title(self, url:str) -> str:
+    def format_title(self, url:str, chrome_browser:ChromeDriverFactory) -> str:
+        logger.info(f"Formatting title for URL: {url}")
         parts = urlparse(url).path.rstrip("/").split("/")
         title = parts[-1] if parts else None
-        names = self._get_names(url)
+        names = self._get_names(url, chrome_browser)
 
         all_names = "[" + ",".join(names) + "]"
         result = all_names + title
         return result
 
-    def _get_names(self, href: str) -> list[str]:
+    def _get_names(self, href: str, chrome_browser:ChromeDriverFactory) -> list[str]:
         H3_TEXT = os.environ.get('H3_TEXT')
 
         logger.info("Switching to new window.")
 
-        chrome = ChromeDriverFactory(href)
-        driver = chrome.get_driver()
+        chrome_browser.set_driver(href)
+        driver = chrome_browser.get_driver()
 
         WebDriverWait(driver, 20).until(
             EC.presence_of_all_elements_located((By.TAG_NAME, "body"))

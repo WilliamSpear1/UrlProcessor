@@ -8,77 +8,80 @@ from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire.webdriver import Chrome
 
 from chrome_driver_factory import ChromeDriverFactory
+from logs.logger_config import setup_logging
 from title_formatter import TitleFormatter
 
-logger = logging.getLogger(__name__)
+logger = setup_logging(__name__)
 
 class Downloader:
     def scarp_multiple_videos(self, chrome_browser:ChromeDriverFactory) -> dict:
+        """Scrape multiple video download URLs from page."""
         driver = chrome_browser.get_driver()
 
-        """Scrape multiple video download URLs from page."""
         logger.info("Starting Scraping of videos.")
-        video_list = driver.find_elements(By.CSS_SELECTOR, "article.item > div.item-info")
-        logger.info("Scraping complete. Found %d videos thumbnails.", len(video_list))
-        return self._extract_video_links(video_list)
+
+        video_list = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "article.item > div.item-info")))
+
+        if video_list is None:
+            logger.exception("No videos found.")
+            raise Exception("No Elements Discovered.")
+
+        print("Scraping complete. Found %d videos thumbnails.", len(video_list))
+        return self._extract_video_links(video_list, chrome_browser)
 
     def scarp_individual_videos(self, urls:list) -> dict:
         """Scrape multiple video download URLs from file."""
         videos = {}
         title_formatter = TitleFormatter()
+        chrome_browser = ChromeDriverFactory()
 
         for url in urls:
             href = url
-            title = title_formatter.format_title(url)
+            title = title_formatter.format_title(url, chrome_browser)
             if href and title:
                 videos[title] = href
-        return self._build_downloadable_videos(videos)
+        return self._build_downloadable_videos(videos, chrome_browser)
 
-    def _extract_video_links(self, video_titles:list) -> dict[str, str]:
+    def _extract_video_links(self, video_titles:list, chrome_browser:ChromeDriverFactory) -> dict[str, str]:
         """Extract titles and hrefs from video elements."""
         videos = {}
 
         for element in video_titles:
             anchor_element = element.find_element(By.CSS_SELECTOR, 'a')
-            href                    = anchor_element.get_attribute('href')
-            title                    = anchor_element.get_attribute('title')
+            href = anchor_element.get_attribute('href')
+            title = anchor_element.get_attribute('title')
             if href and title:
                 videos[title] = href
 
-        logger.info(" Extracted Videos %s" , videos)
+        logger.info("Extracted Videos %s" , videos)
 
-        return self._build_downloadable_videos(videos)
+        return self._build_downloadable_videos(videos, chrome_browser)
 
-    def _build_downloadable_videos(self, videos:dict) -> dict[str,str] | None:
+    def _build_downloadable_videos(self, videos:dict, chrome_browser:ChromeDriverFactory) -> dict[str,str] | None:
         """Open each video in a new tab, extract download link, then close tab."""
         download_links = {}
 
         for title, href in videos.items():
-            download_links[title] = self._get_video_link(href)
+            download_links[title] = self._get_video_link(href, chrome_browser)
 
         logger.info("Download Links: %s", download_links)
         return download_links
 
-    def _get_video_link(self, href: str) -> str | None:
-        chrome = ChromeDriverFactory(href)
-        driver = chrome.get_driver()
+    def _get_video_link(self, href: str, chrome_browser:ChromeDriverFactory) -> str | None:
+        chrome_browser.set_driver(href)
+        driver = chrome_browser.get_driver()
 
         logger.info(f"Acquiring downloadable link for {href}")
-        try:
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_all_elements_located((By.TAG_NAME, "body"))
-            )
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_all_elements_located((By.TAG_NAME, "body"))
+        )
 
-            time.sleep(5)
+        time.sleep(5)
 
-            download_link = self._grab_download_link(driver)
+        download_link = self._grab_download_link(driver)
 
-            logger.info(f"Download Link: {download_link}")
-            return download_link
-        finally:
-            logger.info("Closing Browser")
-            # Close the tab and switch back
-            chrome.close_browser()
+        logger.info(f"Download Link: {download_link}")
+        return download_link
 
     def _grab_download_link(self, driver: Chrome) -> str | None:
         DOMAIN_NAME = os.environ.get('DOMAIN')

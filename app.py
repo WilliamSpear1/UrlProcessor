@@ -5,11 +5,11 @@ from celery.result import AsyncResult
 from flask import request, jsonify, Response, Flask
 from werkzeug.datastructures import FileStorage
 
+from logs.logger_config import setup_logging
 from tasks import fetch_urls, celery_app, upload_urls
 
-logger = logging.getLogger(__name__)
+logger = setup_logging(__name__)
 app = Flask(__name__)
-
 
 # routes for polling task status.
 @app.route('/task-status/<task_id>', methods=['GET'])
@@ -47,6 +47,7 @@ def download() -> tuple[Response, int]:
 
     for attempt in range(1, MAX_RETRIES - 1):
         try:
+            logger.debug("Submitting task from url=%s with number_of_pages=%s", url, number_of_pages)
             task = fetch_urls.delay(url, number_of_pages)
             logger.info("Submitted task_id=%s for url=%s", task.id, url)
             return jsonify({"task_id": task.id, "status": "processing"}), 202

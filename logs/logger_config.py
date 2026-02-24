@@ -9,6 +9,7 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 Path("/var/log/url_processor").mkdir(parents=True, exist_ok=True)
+LOGGING_LEVEL = os.environ.get('LOGGING_LEVEL', 'INFO').upper()
 
 LOGGING_CONFIG = {
     "version": 1,
@@ -23,7 +24,7 @@ LOGGING_CONFIG = {
         "console_handler": {
             "class": "logging.StreamHandler",
             "formatter": "default",
-            "level": logging.INFO
+            "level": LOGGING_LEVEL,
         },
         "file_handler": {
             "class": "logging.handlers.TimedRotatingFileHandler",
@@ -32,14 +33,13 @@ LOGGING_CONFIG = {
             "when": "midnight",
             "atTime": datetime.time(2, 0, 0),
             "backupCount": 3,
-            "level": logging.INFO
+            "level": LOGGING_LEVEL,
         },
     },
     "loggers": {
-        "app_logger": {
+        "": {
             "handlers": ["console_handler", "file_handler"],
-            "level": logging.INFO,
-            "propagate": False,
+            "level": LOGGING_LEVEL
         }
     }
 }
@@ -58,7 +58,9 @@ def compress_rotated_log(source, dest) -> None:
 
     with open(source, 'rb') as f_in, gzip.open(dest, 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
-    os.remove(source)
+
+    if os.path.exists(source):
+        os.remove(source)
 
 def add_rotator(logger) -> None:
     for handler in logger.handlers:
@@ -71,18 +73,8 @@ def setup_logging(name) -> logging.Logger:
     Set up logging configuration.
     """
     logging.config.dictConfig(LOGGING_CONFIG)
-
-    logger = logging.getLogger('app_logger')
+    logger = logging.getLogger()
     add_rotator(logger)
-
-     # Attach Gunicorn loggers (error + access) to app_logger handlers
-    gunicorn_error = logging.getLogger("gunicorn.error")
-    gunicorn_access = logging.getLogger("gunicorn.access")
-
-    for g_logger in (gunicorn_error, gunicorn_access):
-        g_logger.handlers = logger.handlers
-        g_logger.setLevel(logging.INFO)
-        g_logger.propagate = False
-
-    logger.info("Logging is set up in: %s", name)
+    logger.info(f"Logging is set up in: {name}")
+    logger.debug("Logging Level: %s", LOGGING_LEVEL)
     return logger
