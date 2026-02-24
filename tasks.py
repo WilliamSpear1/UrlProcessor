@@ -3,29 +3,15 @@ import os
 from celery import Celery
 
 from chrome_driver_factory import ChromeDriverFactory
+from conf.celery_conf import Config
 from conf.logger_conf import setup_logging
 from downloader import Downloader
 from page_updater import PageUpdater
 
 logger = setup_logging(__name__)
-
 # Celery App initialization & configuration.
-celery_app = Celery(
-    "url_processor",
-    backend=os.environ['CELERY_RESULT_BACKEND'],
-    broker=os.environ['CELERY_BROKER_URL']
-)
-
-celery_app.conf.update(
-    task_default_queue = "url_processor_queue",
-    task_serializer="json",
-    accept_content=["json"],
-    result_serializer="json",
-    timezone="UTC",
-    enable_utc=True,
-    worker_prefetch_multiplier=1,
-    task_acks_late=True
-)
+celery_app = Celery("url_processor")
+celery_app.config_from_object(Config)
 
 # Celery App Task.
 @celery_app.task
