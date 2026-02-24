@@ -1,42 +1,33 @@
-# =========================
-# 1. Builder stage
-# =========================
-FROM python:3.11-slim AS builder
-
-WORKDIR /app
-
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc g++ build-essential \
-    python3-dev libffi-dev libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Upgrade pip and pre-build wheels for dependencies
-COPY requirements.txt .
-RUN pip install --upgrade pip setuptools wheel && \
-    pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
-
-# =========================
-# 2. Runtime stage
-# =========================
 FROM python:3.11-slim
 
-WORKDIR /app
-
-# Install runtime dependencies (no heavy build tools)
+# Install system dependencies, Chromium, and networking tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget less \
+    wget \
+    gnupg \
+    unzip \
+    libnss3 \
+    libffi-dev \
+    openssl \
+    ca-certificates \
+    apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get update && apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-    rm google-chrome-stable_current_amd64.deb && \
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /app
+
+# Install Chrome pulled from this stackoverflow thread:https://stackoverflow.com/questions/70955307/how-to-install-google-chrome-in-a-docker-container
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy prebuilt wheels from builder
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache /wheels/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy project code
 COPY . /app
@@ -45,9 +36,9 @@ EXPOSE 5001
 
 CMD ["gunicorn","app:app", \
     "--bind", "0.0.0.0:5001", \
-    "--workers", "2", \
+    "--workers", "4", \
     "--worker-class", "gthread", \
-    "--threads", "2", \
+    "--threads", "4", \
     "--timeout", "120", \
     "--max-requests", "1000", \
     "--max-requests-jitter", "50", \

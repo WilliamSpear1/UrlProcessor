@@ -1,9 +1,11 @@
 services:
   # Url Processor Container
   url_processor:
-    image: registry.spearmanwm.dev/url_processor:latest
+    build: .
+    image: url_processor:dev
     container_name: url_processor
     restart: unless-stopped
+    env_file: .env
     ports:
       - 5001:5001
     # Optional - alternative address used for autodiscovery
@@ -15,17 +17,21 @@ services:
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
       - H3_TEXT=${H3_TEXT}
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
     networks:
       - app-net
   # Celery Worker Container
   celery-worker:
-    image: registry.spearmanwm.dev/url_processor:latest
+    build: .
+    image: url_processor:dev
+    env_file: .env
     container_name: celery_worker_url_processor
     command: celery -A tasks worker -Q url_processor_queue --events -l info
     environment:
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
     depends_on:
       - url_processor
 networks:
