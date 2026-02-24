@@ -1,7 +1,6 @@
-import logging
 import re
 
-from logs.logger_config import setup_logging
+from conf.logger_conf import setup_logging
 
 logger = setup_logging(__name__)
 

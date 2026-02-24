@@ -34,15 +34,4 @@ COPY . /app
 
 EXPOSE 5001
 
-CMD ["gunicorn","app:app", \
-    "--bind", "0.0.0.0:5001", \
-    "--workers", "4", \
-    "--worker-class", "gthread", \
-    "--threads", "4", \
-    "--timeout", "120", \
-    "--max-requests", "1000", \
-    "--max-requests-jitter", "50", \
-    "--log-level", "info", \
-    "--error-logfile", "-", \
-    "--access-logfile", "-", \
-    "--capture-output"]
+CMD ["gunicorn", "-c", "conf/gunicorn.conf.py", "app:app"]

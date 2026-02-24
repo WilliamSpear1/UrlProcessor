@@ -1,11 +1,10 @@
-import logging
 import time
 
 from celery.result import AsyncResult
 from flask import request, jsonify, Response, Flask
 from werkzeug.datastructures import FileStorage
 
-from logs.logger_config import setup_logging
+from conf.logger_conf import setup_logging
 from tasks import fetch_urls, celery_app, upload_urls
 
 logger = setup_logging(__name__)

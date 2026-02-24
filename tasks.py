@@ -1,11 +1,10 @@
-import logging
 import os
 
 from celery import Celery
 
 from chrome_driver_factory import ChromeDriverFactory
+from conf.logger_conf import setup_logging
 from downloader import Downloader
-from logs.logger_config import setup_logging
 from page_updater import PageUpdater
 
 logger = setup_logging(__name__)

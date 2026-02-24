@@ -1,4 +1,3 @@
-import logging
 import os
 import time
 
@@ -8,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire.webdriver import Chrome
 
 from chrome_driver_factory import ChromeDriverFactory
-from logs.logger_config import setup_logging
+from conf.logger_conf import setup_logging
 from title_formatter import TitleFormatter
 
 logger = setup_logging(__name__)
