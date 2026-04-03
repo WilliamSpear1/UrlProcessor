@@ -1,3 +1,5 @@
+def image = ''
+
 pipeline {
     agent any
 
@@ -9,15 +11,14 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GithubJenkins2', url: 'https://github.com/WilliamSpear1/Downloader.git']])
+                checkout scm
             }
         }
 
         stage('build docker image') {
             steps {
                 script {
-                    echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
-                    sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} -t ${REGISTRY}/${IMAGE_NAME}:latest ."
+                    image = docker.build("${REGISTRY}/${IMAGE_NAME}:${BUILD_ID}")
                 }
             }
         }
@@ -26,8 +27,8 @@ pipeline {
             steps {
                 script {
                    docker.withRegistry("https://${REGISTRY}") {
-                        sh "docker push ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
-                        sh "docker push ${REGISTRY}/${IMAGE_NAME}:latest"
+                        image.push()
+                        image.push('prod')
                     }
                 }
             }
