@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "default": {
+      "format": "[%(asctime)s] [%(levelname)s] [PID:%(process)d] [TID:%(thread)d] %(name)s: %(message)s",
+      "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+    }
+  },
+  "handlers": {
+    "console_handler": {
+      "class": "logging.StreamHandler",
+      "formatter": "default",
+      "level": "INFO"
+    },
+    "file_handler": {
+      "class": "logging.handlers.RotatingFileHandler",
+      "level": "INFO",
+      "formatter": "default",
+      "filename": "/app/log/downloader.logs",
+      "maxBytes": 10485760,
+      "backupCount": 3
+    },
+    "queue_handler": {
+      "class": "logging.handlers.QueueHandler",
+      "handlers": [
+        "console_handler",
+        "file_handler"
+      ],
+      "respect_handler_level": true
+    }
+  },
+  "loggers": {
+    "root": {
+      "level": "INFO",
+      "handlers": [
+        "console_handler",
+        "file_handler"
+      ]
+    }
+  }
+}
