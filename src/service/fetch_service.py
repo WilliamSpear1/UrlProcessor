@@ -1,8 +1,8 @@
-from model.chrome_driver import ChromeDriverFactory
 from .downloader_service import DownloaderService
 from .page_updater_service import PageUpdaterService
 from ..configuration.celery_app import celery_app
 from ..configuration.logger_conf import setup_logging
+from ..model.chrome_driver import ChromeDriver
 
 logger = setup_logging(__name__)
 # Celery App Task.
@@ -11,7 +11,7 @@ def fetch_urls(url:str, number_of_pages:int) -> dict:
     """
     Celery Task: Launch a Chrome browser, scarp downloadable video URLS, and return them.
     """
-    chrome_browser = ChromeDriverFactory()
+    chrome_browser = ChromeDriver()
     logger.debug("Launching Chrome Browser")
     try:
         logger.debug("Inside fetch_urls with URL: %s and number_of_pages: %d", url, number_of_pages)
