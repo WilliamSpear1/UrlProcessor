@@ -1,20 +1,12 @@
-import os
-
-from celery import Celery
-
-from chrome_driver_factory import ChromeDriverFactory
-from conf.celery_conf import Config
-from conf.logger_conf import setup_logging
-from downloader import Downloader
-from page_updater import PageUpdater
+from model.chrome_driver import ChromeDriverFactory
+from .downloader_service import DownloaderService
+from .page_updater_service import PageUpdaterService
+from ..configuration.celery_app import celery_app
+from ..configuration.logger_conf import setup_logging
 
 logger = setup_logging(__name__)
-# Celery App initialization & configuration.
-celery_app = Celery("url_processor")
-celery_app.config_from_object(Config)
-
 # Celery App Task.
-@celery_app.task
+@celery_app.task(name="fetch_service.fetch_urls")
 def fetch_urls(url:str, number_of_pages:int) -> dict:
     """
     Celery Task: Launch a Chrome browser, scarp downloadable video URLS, and return them.
@@ -23,8 +15,8 @@ def fetch_urls(url:str, number_of_pages:int) -> dict:
     logger.debug("Launching Chrome Browser")
     try:
         logger.debug("Inside fetch_urls with URL: %s and number_of_pages: %d", url, number_of_pages)
-        downloader = Downloader()
-        page_updater = PageUpdater(url)
+        downloader = DownloaderService()
+        page_updater = PageUpdaterService(url)
 
         download_videos = {}
 
@@ -52,13 +44,3 @@ def fetch_urls(url:str, number_of_pages:int) -> dict:
                 logger.info("Browser session closed successfully")
             except Exception as close_error:
                 logger.warning("Error while closing browser: %s", close_error)
-
-@celery_app.task
-def upload_urls(urls: list) -> dict:
-    """
-    Celery Task: Scarp downloadable video URLS, and return them.
-    """
-    downloader = Downloader()
-    download_videos = downloader.scarp_individual_videos(urls)
-
-    return download_videos

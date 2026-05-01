@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from chrome_driver_factory import ChromeDriverFactory
-from conf.logger_conf import setup_logging
+from model.chrome_driver import ChromeDriverFactory
+from src.configuration.logger_conf import setup_logging
 
 logger = setup_logging(__name__)
-class TitleFormatter:
+class TitleFormatterService:
     def format_title(self, url:str, chrome_browser:ChromeDriverFactory) -> str:
         logger.info(f"Formatting title for URL: {url}")
         parts = urlparse(url).path.rstrip("/").split("/")

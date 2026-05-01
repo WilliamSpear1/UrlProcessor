@@ -1,10 +1,9 @@
 import re
 
-from conf.logger_conf import setup_logging
+from ..configuration.logger_conf import setup_logging
 
 logger = setup_logging(__name__)
-
-class PageUpdater:
+class PageUpdaterService:
     def __init__(self, url):
         self.url = url
 
