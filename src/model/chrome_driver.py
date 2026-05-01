@@ -5,11 +5,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
 from seleniumwire.webdriver import Chrome
 
-from conf.logger_conf import setup_logging
+from ..configuration.logger_conf import setup_logging
 
 logger = setup_logging(__name__)
-
-class ChromeDriverFactory:
+class ChromeDriver:
     def __init__(self):
         self.driver = self.browser()
 

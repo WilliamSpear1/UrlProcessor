@@ -34,4 +34,4 @@ COPY . /app
 
 EXPOSE 5001
 
-CMD ["gunicorn", "-c", "conf/gunicorn.conf.py", "app:app"]
+CMD ["gunicorn", "-c", "src/configuration/gunicorn.conf.py", "src.api:api"]

@@ -18,6 +18,8 @@ services:
       - DOMAIN=${DOMAIN}
       - H3_TEXT=${H3_TEXT}
       - ENVIRONMENT=${ENVIRONMENT}
+    volumes:
+      - /home/wilabeast/logs:/app/log/
     networks:
       - app-net
   # Celery Worker Container
@@ -26,12 +28,14 @@ services:
     image: url_processor:dev
     env_file: .env
     container_name: celery_worker_url_processor
-    command: celery -A tasks worker -Q url_processor_queue --events -l info
+    command: celery -A src.configuration.celery_app worker -Q url_processor_queue --events -l info
     environment:
       - CELERY_BROKER_URL=${CELERY_BROKER_URL}
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - DOMAIN=${DOMAIN}
       - ENVIRONMENT=${ENVIRONMENT}
+    volumes:
+      - /home/wilabeast/logs:/app/log/
     depends_on:
       - url_processor
 networks:

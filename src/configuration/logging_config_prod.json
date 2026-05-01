@@ -11,11 +11,11 @@
     "console_handler": {
       "class": "logging.StreamHandler",
       "formatter": "default",
-      "level": "DEBUG"
+      "level": "INFO"
     },
     "file_handler": {
       "class": "logging.handlers.RotatingFileHandler",
-      "level": "DEBUG",
+      "level": "INFO",
       "formatter": "default",
       "filename": "/app/log/downloader.logs",
       "maxBytes": 10485760,
@@ -32,8 +32,11 @@
   },
   "loggers": {
     "root": {
-      "level": "DEBUG",
-      "handlers": ["queue_handler"]
+      "level": "INFO",
+      "handlers": [
+        "console_handler",
+        "file_handler"
+      ]
     }
   }
 }

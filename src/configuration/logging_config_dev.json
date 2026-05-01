@@ -11,29 +11,24 @@
     "console_handler": {
       "class": "logging.StreamHandler",
       "formatter": "default",
-      "level": "INFO"
+      "level": "DEBUG"
     },
     "file_handler": {
       "class": "logging.handlers.RotatingFileHandler",
-      "level": "INFO",
+      "level": "DEBUG",
       "formatter": "default",
       "filename": "/app/log/downloader.logs",
       "maxBytes": 10485760,
       "backupCount": 3
-    },
-    "queue_handler": {
-      "class": "logging.handlers.QueueHandler",
-      "handlers": [
-        "console_handler",
-        "file_handler"
-      ],
-      "respect_handler_level": true
     }
   },
   "loggers": {
     "root": {
-      "level": "INFO",
-      "handlers": ["queue_handler"]
+      "level": "DEBUG",
+      "handlers": [
+        "console_handler",
+        "file_handler"
+      ]
     }
   }
 }

@@ -6,14 +6,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire.webdriver import Chrome
 
-from chrome_driver_factory import ChromeDriverFactory
-from conf.logger_conf import setup_logging
-from title_formatter import TitleFormatter
+from ..configuration.logger_conf import setup_logging
+from ..model.chrome_driver import ChromeDriver
 
 logger = setup_logging(__name__)
-
-class Downloader:
-    def scarp_multiple_videos(self, chrome_browser:ChromeDriverFactory) -> dict:
+class DownloaderService:
+    def scarp_multiple_videos(self, chrome_browser:ChromeDriver) -> dict:
         """Scrape multiple video download URLs from page."""
         driver = chrome_browser.get_driver()
 
@@ -28,20 +26,7 @@ class Downloader:
         print("Scraping complete. Found %d videos thumbnails.", len(video_list))
         return self._extract_video_links(video_list, chrome_browser)
 
-    def scarp_individual_videos(self, urls:list) -> dict:
-        """Scrape multiple video download URLs from file."""
-        videos = {}
-        title_formatter = TitleFormatter()
-        chrome_browser = ChromeDriverFactory()
-
-        for url in urls:
-            href = url
-            title = title_formatter.format_title(url, chrome_browser)
-            if href and title:
-                videos[title] = href
-        return self._build_downloadable_videos(videos, chrome_browser)
-
-    def _extract_video_links(self, video_titles:list, chrome_browser:ChromeDriverFactory) -> dict[str, str]:
+    def _extract_video_links(self, video_titles:list, chrome_browser:ChromeDriver) -> dict[str, str]:
         """Extract titles and hrefs from video elements."""
         videos = {}
 
@@ -56,7 +41,7 @@ class Downloader:
 
         return self._build_downloadable_videos(videos, chrome_browser)
 
-    def _build_downloadable_videos(self, videos:dict, chrome_browser:ChromeDriverFactory) -> dict[str,str] | None:
+    def _build_downloadable_videos(self, videos:dict, chrome_browser:ChromeDriver) -> dict[str,str] | None:
         """Open each video in a new tab, extract download link, then close tab."""
         download_links = {}
 
@@ -66,7 +51,7 @@ class Downloader:
         logger.info("Download Links: %s", download_links)
         return download_links
 
-    def _get_video_link(self, href: str, chrome_browser:ChromeDriverFactory) -> str | None:
+    def _get_video_link(self, href: str, chrome_browser:ChromeDriver) -> str | None:
         chrome_browser.set_driver(href)
         driver = chrome_browser.get_driver()
 

@@ -2,16 +2,15 @@ import time
 
 from celery.result import AsyncResult
 from flask import request, jsonify, Response, Flask
-from werkzeug.datastructures import FileStorage
 
-from conf.logger_conf import setup_logging
-from tasks import fetch_urls, celery_app, upload_urls
+from .configuration.logger_conf import setup_logging
+from .service.fetch_service import fetch_urls, celery_app
 
 logger = setup_logging(__name__)
-app = Flask(__name__)
+api = Flask(__name__)
 
 # routes for polling task status.
-@app.route('/task-status/<task_id>', methods=['GET'])
+@api.route('/task-status/<task_id>', methods=['GET'])
 def task_status(task_id) -> tuple[Response,int]:
     """Endpoint to check the status of a Celery task."""
     task: AsyncResult = celery_app.AsyncResult(task_id)
@@ -29,7 +28,7 @@ def task_status(task_id) -> tuple[Response,int]:
     return jsonify(response), 200
 
 # routes for polling task status.
-@app.route('/fetch-urls', methods=['POST'])
+@api.route('/fetch-urls', methods=['POST'])
 def download() -> tuple[Response, int]:
     """Endpoint to start a Celery task for scraping URLs."""
     # Configurable retry policy
@@ -58,23 +57,3 @@ def download() -> tuple[Response, int]:
                 return jsonify({"error": str(e)}), 400
 
     return jsonify({"Error": "Problem occurring with processing URL"}), 500
-
-# route for uploading urls from files.
-@app.route('/upload', methods=['POST'])
-def upload() -> tuple[Response, int]:
-    logger.info(f"Request: {request.files}")
-    uploaded_file = request.files["file"]
-    logger.info("here")
-    if not uploaded_file:
-        logger.error("Missing uploaded file")
-        return jsonify({"error": "file_path required"}), 400
-
-    urls = process_urls(uploaded_file)
-    task = upload_urls.delay(urls)
-    return jsonify({"task_id": task.id, "status": "processing"}), 202
-
-def process_urls(uploaded_file: FileStorage) -> list:
-    urls = []
-    for line in uploaded_file.stream:
-            urls.append(line.decode("utf-8").strip())
-    return urls
